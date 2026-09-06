@@ -1,0 +1,41 @@
+name: Sync verified Vercel website
+on:
+  push:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download exact production files
+        shell: bash
+        run: |
+          set -euo pipefail
+          base='https://uns-website-1.vercel.app'
+          mkdir -p assets about academics admissions learning-options research career-development news-events contact
+          curl -fsSL "$base/" -o index.html
+          curl -fsSL "$base/about/" -o about/index.html
+          curl -fsSL "$base/academics/" -o academics/index.html
+          curl -fsSL "$base/admissions/" -o admissions/index.html
+          curl -fsSL "$base/learning-options/" -o learning-options/index.html
+          curl -fsSL "$base/research/" -o research/index.html
+          curl -fsSL "$base/career-development/" -o career-development/index.html
+          curl -fsSL "$base/news-events/" -o news-events/index.html
+          curl -fsSL "$base/contact/" -o contact/index.html
+          curl -fsSL "$base/assets/styles.css" -o assets/styles.css
+          curl -fsSL "$base/assets/site.js" -o assets/site.js
+          curl -fsSL "$base/assets/uns-logo.jpg" -o assets/uns-logo.jpg
+          curl -fsSL "$base/assets/uns-map.png" -o assets/uns-map.png
+          curl -fsSL "$base/robots.txt" -o robots.txt
+          curl -fsSL "$base/sitemap.xml" -o sitemap.xml
+          curl -fsSL "$base/vercel.json" -o vercel.json
+      - name: Commit synchronized source
+        run: |
+          rm -f .github/workflows/sync-vercel-source.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'feat: import complete UNS website from Vercel'
+          git push
