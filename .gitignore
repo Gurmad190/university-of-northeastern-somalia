@@ -1,2 +1,4 @@
+dist/
+portal/config.js
 __pycache__/
-.DS_Store
+*.py[cod]

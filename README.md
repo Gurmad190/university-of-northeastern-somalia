@@ -1,29 +1,21 @@
 # University of Northeastern Somalia website
 
-Official static website source for the University of Northeastern Somalia (UNS), Garowe, Puntland, Somalia.
+This repository deploys the public UNS website and the **UNS Digital Portal** to the existing Vercel project.
 
-## Current production
+## Digital Portal — Phase 1
 
-- Website: https://uns-website-1.vercel.app
-- Application form: https://form.jotform.com/262473510150043
-- Pages: Home, About, Academics, Admissions, Learning Options, Research, Career Development, News & Events, and Contact
+The portal is available at `/portal/` and uses the existing UNS Digital Portal Supabase project.
 
-## Production build
+- Roles: `main_admin`, `admin`, and `student`
+- Authentication: institution-provisioned Supabase Auth accounts; public registration is disabled
+- Records: Supabase-backed student profiles and news posts only
+- Security: RLS policies permit students to read only their own profile; staff permissions are enforced in the database
+- News: authorised staff can create, edit, publish/unpublish, and delete news
 
-Vercel runs:
+Excluded from this phase: fees, payments, grades, courses, lecturer management, and other advanced systems.
 
-```bash
-python3 build_for_vercel.py
-```
+The tracked migration is at `supabase/migrations/20260906194500_phase1_portal.sql`.
 
-The build downloads the verified production source, routes every Apply action to the official Jotform, validates the result, and writes the deployable website to `dist/`.
+## Deployment
 
-To materialize the currently deployed public source into a local checkout instead, run:
-
-```bash
-python3 sync_from_vercel.py
-```
-
-## Content policy
-
-Only verified UNS information should be published. Do not add unconfirmed accreditation, rankings, fees, deadlines, facilities, publications, vacancies, statistics, or partnerships. Use “Contact UNS for details” where information is unavailable.
+Vercel runs `python3 build_for_vercel.py`. It needs `SUPABASE_URL` and `SUPABASE_PUBLISHABLE_KEY` configured in Vercel. `portal/config.js` is generated during the build and deliberately not committed. Never add a Supabase secret or service-role key to browser code or this repository.
