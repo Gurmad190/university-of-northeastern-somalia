@@ -5,17 +5,24 @@ Official static website source for the University of Northeastern Somalia (UNS),
 ## Current production
 
 - Website: https://uns-website-1.vercel.app
+- Application form: https://form.jotform.com/262473510150043
 - Pages: Home, About, Academics, Admissions, Learning Options, Research, Career Development, News & Events, and Contact
 
-## Materialize the verified production source
+## Production build
 
-The production deployment is static. To download its exact public source tree into this repository checkout, run:
+Vercel runs:
+
+```bash
+python3 build_for_vercel.py
+```
+
+The build downloads the verified production source, routes every Apply action to the official Jotform, validates the result, and writes the deployable website to `dist/`.
+
+To materialize the currently deployed public source into a local checkout instead, run:
 
 ```bash
 python3 sync_from_vercel.py
 ```
-
-The script downloads all nine HTML routes, shared CSS and JavaScript, the unmodified official logo, campus map, `robots.txt`, and `sitemap.xml`. It verifies every response before replacing files.
 
 ## Content policy
 
